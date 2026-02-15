@@ -15,20 +15,25 @@ sudo find /var/www/ws-forms -type f -exec chmod 664 {} \;
 # Setgid-Bit setzen (neue Dateien erben automatisch die Gruppe www-data)
 sudo chmod g+s /var/www/ws-forms
 
-2. Apache Virtual Host KonfigurationErstelle die Konfigurationsdatei:sudo nano /etc/apache2/sites-available/ws-forms.confInhalt der Datei:Apache<VirtualHost *:80>
-   ServerAdmin test@example.de
-   DocumentRoot /var/www/ws-forms/
-   ServerName ws-forms.com
+2. Apache Virtual Host KonfigurationErstelle die Konfigurationsdatei:sudo nano /etc/apache2/sites-available/ws-forms.conf
 
-   ErrorLog ${APACHE_LOG_DIR}/error.log
-   CustomLog ${APACHE_LOG_DIR}/access.log combined
+   Inhalt der Datei:
 
-   <Directory /var/www/ws-forms/>
-   AllowOverride All
-   Require all granted
-   </Directory>
+   <VirtualHost *:80>
+      ServerAdmin test@example.de
+      DocumentRoot /var/www/ws-forms/
+      ServerName ws-forms.com
+   
+      ErrorLog ${APACHE_LOG_DIR}/error.log
+      CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+      <Directory /var/www/ws-forms/>
+      AllowOverride All
+      Require all granted
+      </Directory>
    </VirtualHost>
-3. Seite aktivieren & Apache neu ladenBash# Seite aktivieren
+   
+5. Seite aktivieren & Apache neu ladenBash# Seite aktivieren
    sudo a2ensite ws-forms.conf
 
 # Syntax der Konfiguration prüfen
