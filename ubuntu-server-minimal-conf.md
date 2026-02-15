@@ -1,4 +1,5 @@
 Ubuntu Server Einrichtung: ws-forms.comDiese Anleitung beschreibt die Einrichtung eines Apache Virtual Hosts auf einem Ubuntu System.1. Verzeichnisstruktur & BerechtigungenZuerst legen wir das Projektverzeichnis an. Der aktuelle User bleibt Besitzer, die Gruppe wird www-data.Bash# Verzeichnis erstellen
+
 sudo mkdir -p /var/www/ws-forms
 
 # Gruppe auf www-data setzen (Besitzer bleibt dein User)
@@ -13,6 +14,7 @@ sudo find /var/www/ws-forms -type f -exec chmod 664 {} \;
 
 # Setgid-Bit setzen (neue Dateien erben automatisch die Gruppe www-data)
 sudo chmod g+s /var/www/ws-forms
+
 2. Apache Virtual Host KonfigurationErstelle die Konfigurationsdatei:sudo nano /etc/apache2/sites-available/ws-forms.confInhalt der Datei:Apache<VirtualHost *:80>
    ServerAdmin test@example.de
    DocumentRoot /var/www/ws-forms/
