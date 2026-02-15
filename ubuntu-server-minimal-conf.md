@@ -1,5 +1,17 @@
-Ubuntu Server Einrichtung: ws-forms.comDiese Anleitung beschreibt die Einrichtung eines Apache Virtual Hosts auf einem Ubuntu System.1. Verzeichnisstruktur & BerechtigungenZuerst legen wir das Projektverzeichnis an. Der aktuelle User bleibt Besitzer, die Gruppe wird www-data.Bash# Verzeichnis erstellen
+````markdown
+# Ubuntu Server Einrichtung: ws-forms.com
 
+Diese Anleitung beschreibt die vollständige Einrichtung eines Apache Virtual Hosts auf einem Ubuntu System für die Domain **ws-forms.com**.
+
+---
+
+## 1. Verzeichnisstruktur & Berechtigungen
+
+Zuerst legen wir das Projektverzeichnis an.  
+Der aktuelle User bleibt Besitzer, die Gruppe wird `www-data`.
+
+```bash
+# Verzeichnis erstellen
 sudo mkdir -p /var/www/ws-forms
 
 # Gruppe auf www-data setzen (Besitzer bleibt dein User)
@@ -14,32 +26,78 @@ sudo find /var/www/ws-forms -type f -exec chmod 664 {} \;
 
 # Setgid-Bit setzen (neue Dateien erben automatisch die Gruppe www-data)
 sudo chmod g+s /var/www/ws-forms
+````
 
-2. Apache Virtual Host KonfigurationErstelle die Konfigurationsdatei:sudo nano /etc/apache2/sites-available/ws-forms.conf
+---
 
-   Inhalt der Datei:
+## 2. Apache Virtual Host Konfiguration
 
-   <VirtualHost *:80>
-      ServerAdmin test@example.de
-      DocumentRoot /var/www/ws-forms/
-      ServerName ws-forms.com
-   
-      ErrorLog ${APACHE_LOG_DIR}/error.log
-      CustomLog ${APACHE_LOG_DIR}/access.log combined
+Konfigurationsdatei erstellen:
 
-      <Directory /var/www/ws-forms/>
-      AllowOverride All
-      Require all granted
-      </Directory>
-   </VirtualHost>
-   
-5. Seite aktivieren & Apache neu ladenBash# Seite aktivieren
-   sudo a2ensite ws-forms.conf
+```bash
+sudo nano /etc/apache2/sites-available/ws-forms.conf
+```
+
+Inhalt der Datei:
+
+```apache
+<VirtualHost *:80>
+    ServerAdmin test@example.de
+    DocumentRoot /var/www/ws-forms/
+    ServerName ws-forms.com
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    <Directory /var/www/ws-forms/>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+---
+
+## 3. Seite aktivieren & Apache neu laden
+
+```bash
+# Seite aktivieren
+sudo a2ensite ws-forms.conf
 
 # Syntax der Konfiguration prüfen
 sudo apache2ctl configtest
 
 # Apache neu laden
 sudo systemctl reload apache2
-4. Lokale DNS-Auflösung (Hosts-Datei)sudo nano /etc/hostsFolgende Zeile hinzufügen:Plaintext127.0.0.1   ws-forms.com
-5. Nützliche Befehle zur VerwaltungAktionBefehlSeite deaktivierensudo a2dissite ws-forms.confApache Status prüfensudo systemctl status apache2Error Log einsehensudo tail -f /var/log/apache2/error.log
+```
+
+---
+
+## 4. Lokale DNS-Auflösung (Hosts-Datei)
+
+Hosts-Datei öffnen:
+
+```bash
+sudo nano /etc/hosts
+```
+
+Folgende Zeile hinzufügen:
+
+```plaintext
+127.0.0.1   ws-forms.com
+```
+
+---
+
+## 5. Nützliche Befehle zur Verwaltung
+
+| Aktion               | Befehl                                    |
+| -------------------- | ----------------------------------------- |
+| Seite deaktivieren   | `sudo a2dissite ws-forms.conf`            |
+| Apache Status prüfen | `sudo systemctl status apache2`           |
+| Error Log einsehen   | `sudo tail -f /var/log/apache2/error.log` |
+
+---
+
+```
+```
